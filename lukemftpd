@@ -1,5 +1,9 @@
 url ftp://ftp.netbsd.org/pub/NetBSD/misc/tnftp/tnftpd-20190602.tar.gz
 #sig ftp://ftp.netbsd.org/pub/NetBSD/misc/tnftp/tnftpd-20190602.tar.gz.asc
 #pub
-args --without-pam --with-blacklist
+args --without-pam
+#not for slackware --with-blacklist
+#no ssl there
+
+# ftp://ftp.netbsd.org/pub/NetBSD/misc/tnftp/
 
