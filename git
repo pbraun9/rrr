@@ -1,5 +1,5 @@
 url https://github.com/git/git/archive/v2.21.0/git-2.21.0.tar.gz
-args --with-curl --with-expat --with-openssl=/usr/local/ssl
+args --with-curl --with-expat --with-openssl=/usr/local
 gmake
 before_configure gmake configure
 

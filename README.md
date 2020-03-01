@@ -2,9 +2,7 @@
 
 _In case you're somehow unhappy with pkgsrc and slackbuilds_
 
-I use this to build a few production daemons from source, so I am sure I get the latest version, and eventually faster than the binary package updates get released.  Note the main trick here is to link everything against the latest version of OpenSSL or LibreSSL which lives into `/usr/local/ssl`.  Usually `./configure --with-ssl=/usr/local` makes it.
-
-Works best on NetBSD and Slackware Linux (in case you're somehow unhappy with pkgsrc and slackbuilds)
+I use this to build a few production daemons from source, so I am sure I get the latest version, whatever vendor's package is currently available for it.  Also note the main trick here is to link everything against the latest version of OpenSSL or LibreSSL into `/usr/local/`, no matter if the base system already has an older version of it.  Works best on NetBSD and Slackware Linux.
 
 ## Requirements
 

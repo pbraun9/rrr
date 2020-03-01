@@ -1,7 +1,6 @@
 url https://www.openssl.org/source/openssl-1.1.1d.tar.gz
 configure config
-#by default goes to /usr/local/ssl which is fine
-#--openssldir=/usr/local
+#--openssldir=/usr/local/ssl
 
 # https://www.openssl.org/source/
 # https://wiki.openssl.org/index.php/Compilation_and_Installation
