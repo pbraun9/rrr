@@ -2,7 +2,7 @@
 
 rm -f pax_global_header
 find . -type f -name "*.tar.gz" | xargs rm -f
-find . -type f -name "*.tar.bz2"
-find . -type f -name "*.tar.xz"
-find . -type d -maxdepth 1 -mindepth 1 | grep -vE 'CVS|.git' | xargs rm -rf
+find . -type f -name "*.tar.bz2" | xargs rm -f
+find . -type f -name "*.tar.xz" | xargs rm -f
+find . -type d -maxdepth 1 -mindepth 1 | grep -vE './.git|./CVS' | xargs rm -rf
 

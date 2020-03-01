@@ -1,0 +1,8 @@
+#last release 2015 and does not build against openssl111
+
+url ftp://ftp.netbsd.org/pub/NetBSD/misc/tnftp/tnftp-20151004.tar.gz
+sig ftp://ftp.netbsd.org/pub/NetBSD/misc/tnftp/tnftp-20151004.tar.gz.asc
+args --enable-ssl --with-openssl=/usr/local
+
+# ftp://ftp.netbsd.org/pub/NetBSD/misc/tnftp/
+
