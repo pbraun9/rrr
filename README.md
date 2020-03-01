@@ -1,12 +1,14 @@
 # Rogue Rolling Releases
 
+_In case you're somehow unhappy with pkgsrc and slackbuilds_
+
+I use this to build a few production daemons from source, so I am sure I get the latest version, and eventually faster than the binary package updates get released.  Note the main trick here is to link everything against the latest version of OpenSSL or LibreSSL which lives into `/usr/local/ssl`.  Usually `./configure --with-ssl=/usr/local` makes it.
+
 Works best on NetBSD and Slackware Linux (in case you're somehow unhappy with pkgsrc and slackbuilds)
 
 ## Requirements
 
-### NetBSD sysprep
-
-In case you need access to the GIT repo right from the start, you need to use pkgsrc anyway
+NetBSD sysprep --- In case you want to access to the GIT repo right from the start, you need to use pkgsrc anyway
 
 	vi ~/.profile #enable PKG_PATH
 	. ./.profile
@@ -14,9 +16,7 @@ In case you need access to the GIT repo right from the start, you need to use pk
 	pkg_add -v mozilla-rootcerts
 	pkg_add -v mozilla-rootcerts-openssl
 
-### Slackware sysprep
-
-Make sure some KSH is in Da Place
+Slackware sysprep --- Make sure some KSH is in Da Place
 
 	ls -lF /var/log/packages/ksh93-*
 

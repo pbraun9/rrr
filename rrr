@@ -37,7 +37,7 @@ if [[ -n $index ]]; then
         #netbsd sort does not have -V
         #egrep -v '\.[[:digit:]]+rc[[:digit:]]+\.' -- nsd
         available=`$fetchout $index | sed -r 's/.*href="//; s/".*//' | grep ^$pkg`
-        chosen=`echo "$available" | grep .tar.gz$ | egrep -v '\.[[:digit:]]+rc[[:digit:]]+\.' | sort -n | tail -1`
+        chosen=`echo "$available" | grep -E '.tar.[gx]z$' | egrep -v '\.[[:digit:]]+rc[[:digit:]]+\.' | sort -n | tail -1`
         url=$index/$chosen
         print url $url
         unset index
@@ -55,13 +55,13 @@ tarball=${url##*/}
 
 [[ ! -f $tarball ]] && $fetch $url
 #sometimes there is a trailing slash, sometimes there is not
-versiontmp=`tar tvzf $tarball 2>/dev/null | grep -v pax_global_header | head -1 | awk '{print $NF}'`
+versiontmp=`tar tvaf $tarball 2>/dev/null | grep -v pax_global_header | head -1 | awk '{print $NF}'`
 version=${versiontmp%%/*}
 unset versiontmp
 
 if [[ ! -d $version/ ]]; then
-        print tar xzf $tarball
-        tar xzf $tarball
+        print tar xaf $tarball
+        tar xaf $tarball
         cd $version/
         [[ -f ../$pkg.* ]] && for patch in ../$pkg.*; do
                 print "patch -p0 < $patch"
