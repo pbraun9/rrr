@@ -1,13 +1,24 @@
 needs openssl111
 #needs libpsl
 
+shacheck1=`shasum -a 256 /usr/local/ssl/cacert.pem`
+shacheck2=adf770dfd574a0d6026bfaa270cb6879b063957177a991d453ff1d302c02081f
+shacheck3=`awk '{print $1}' /usr/local/ssl/cacert.pem.sha256`
+
+[[ ! $shacheck1 = $shacheck2 || ! $shacheck2 = $shacheck3 ]] && \
+	echo SOMETHING IS WRONG WITH THE CERTS IN /usr/local/ssl/certs/ && exit 1
+
 #url https://curl.haxx.se/download/curl-7.65.3.tar.gz
 #sig https://curl.haxx.se/download/curl-7.65.3.tar.gz.asc
 index https://curl.haxx.se/download/
 
+#slackware
 args --without-libpsl --with-ssl=/usr/local --with-ca-path=/etc/ssl/certs
+
 #netbsd
 #--with-ca-path=/etc/openssl/certs
+
+#more
 #--with-ca-bundle=/usr/local/ssl/certdata.txt
 
 # https://curl.haxx.se/download.html

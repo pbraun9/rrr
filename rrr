@@ -2,8 +2,20 @@
 set -e
 #set -e fails with missing clean: in Makefile
 
-[[ `uname` = Linux ]] && (( jobs = `grep ^proc /proc/cpuinfo | tail -1 | cut -f2 -d:` + 1 ))
-[[ `uname` = NetBSD ]] && (( jobs = `grep -E '^v?cpu' /var/run/dmesg.boot | cut -f1 -d: | tail -1 | sed -r 's/v?cpu//'` + 1 ))
+if [[ `uname` = Linux ]]; then
+	(( jobs = `grep ^proc /proc/cpuinfo | tail -1 | cut -f2 -d:` + 1 ))
+	fetchout="wget -q -O -"
+	fetch="wget -q"
+	tarlist="tar -tvaf"
+	untar="tar -xaf"
+elif [[ `uname` = NetBSD ]]; then
+	(( jobs = `grep -E '^v?cpu' /var/run/dmesg.boot | cut -f1 -d: | tail -1 | sed -r 's/v?cpu//'` + 1 ))
+	fetchout="ftp -a -o -"
+	fetch="ftp -a"
+	tarlist="tar -tvzf"
+	untar="tar -xzf"
+fi
+
 echo number of jobs is $jobs
 
 #optimization
@@ -28,11 +40,6 @@ args=`grep ^args $pkg | cut -f2- -d' '`
 configure=`grep ^configure $pkg | cut -f2- -d' '`
 before_configure=`grep ^before_configure $pkg | cut -f2- -d' '`
 
-[[ `uname` = Linux ]] && fetchout="wget -q -O -"
-[[ `uname` = NetBSD ]] && fetchout="ftp -a -o -"
-[[ `uname` = Linux ]] && fetch="wget -q"
-[[ `uname` = NetBSD ]] && fetch="ftp -a"
-
 if [[ -n $index ]]; then
         #netbsd sort does not have -V
         #egrep -v '\.[[:digit:]]+rc[[:digit:]]+\.' -- nsd
@@ -55,13 +62,13 @@ tarball=${url##*/}
 
 [[ ! -f $tarball ]] && $fetch $url
 #sometimes there is a trailing slash, sometimes there is not
-versiontmp=`tar tvaf $tarball 2>/dev/null | grep -v pax_global_header | head -1 | awk '{print $NF}'`
+versiontmp=`$tarlist $tarball 2>/dev/null | grep -v pax_global_header | head -1 | awk '{print $NF}'`
 version=${versiontmp%%/*}
 unset versiontmp
 
 if [[ ! -d $version/ ]]; then
-        print tar xaf $tarball
-        tar xaf $tarball
+        print $untar $tarball
+        $untar $tarball
         cd $version/
         [[ -f ../$pkg.* ]] && for patch in ../$pkg.*; do
                 print "patch -p0 < $patch"
