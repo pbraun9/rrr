@@ -1,0 +1,4 @@
+url https://www.python.org/ftp/python/2.7.16/Python-2.7.16.tgz
+args --with-pth
+#--enable-optimizations
+

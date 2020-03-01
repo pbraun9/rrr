@@ -1,0 +1,92 @@
+#!/bin/ksh
+set -e
+#set -e fails with missing clean: in Makefile
+
+jobs=5
+
+#optimization
+export CFLAGS="-O2"
+
+#debug & optimization
+#export CFLAGS="-g -O2"
+
+[[ -z $1 ]] && print package? && exit 1
+pkg=$1
+
+[[ ! -f $pkg ]] && print cannot find $pkg && exit 1
+
+index=`grep ^index $pkg | cut -f2- -d' '`
+url=`grep ^url $pkg | cut -f2- -d' '`
+#hash=`grep ^hash $pkg | cut -f2- -d' '`
+#sig=`grep ^sig $pkg | cut -f2- -d' '`
+[[ -n `grep ^gmake $pkg` ]] && make=gmake && print make=gmake || make=make
+
+needs=`grep ^needs $pkg | cut -f2- -d' '`
+args=`grep ^args $pkg | cut -f2- -d' '`
+configure=`grep ^configure $pkg | cut -f2- -d' '`
+before_configure=`grep ^before_configure $pkg | cut -f2- -d' '`
+
+if [[ -n $index ]]; then
+        #netbsd sort does not have -V
+        #egrep -v '\.[[:digit:]]+rc[[:digit:]]+\.' -- nsd
+        available=`ftp -a -o - $index | sed -r 's/.*href="//; s/".*//' | grep ^$pkg`
+        chosen=`echo "$available" | grep .tar.gz$ | egrep -v '\.[[:digit:]]+rc[[:digit:]]+\.' | sort -n | tail -1`
+        url=$index/$chosen
+        print url $url
+        unset index
+elif [[ -n $url ]]; then
+        print url $url
+else
+        print neither index nor url defined in $pkg
+        exit 1
+fi
+[[ -z $url ]] && print url not defined && exit 1
+tarball=${url##*/}
+[[ -z $tarball ]] && print tarball not defined && exit 1
+
+[[ -n $configure ]] && config=$configure || config=configure
+
+[[ ! -f $tarball ]] && ftp -a $url
+#sometimes there is a trailing slash, sometimes there is not
+versiontmp=`tar tvzf $tarball 2>/dev/null | grep -v pax_global_header | head -1 | awk '{print $NF}'`
+version=${versiontmp%%/*}
+unset versiontmp
+
+if [[ ! -d $version/ ]]; then
+        print tar xzf $tarball
+        tar xzf $tarball
+        cd $version/
+        [[ -f ../$pkg.* ]] && for patch in ../$pkg.*; do
+                print "patch -p0 < $patch"
+                patch -p0 < $patch
+        done; unset patch
+        cd ../
+fi
+
+print cd $version/
+cd $version/
+
+#previous build attempt
+#[[ -f Makefile ]] && print tail -F $version/make_clean.log && time $make -j$jobs clean > make_clean.log 2>&1
+
+if [[ -n $before_configure ]]; then
+        print "$before_configure"
+        $before_configure 2>&1 > configure.before.log && print done
+fi
+
+print ./$config $args
+print tail -F $version/configure.log
+./$config $args > configure.log 2>&1 || less configure.log
+
+print time $make -j$jobs
+print tail -F $version/make.log
+time $make -j$jobs > make.log 2>&1 || less make.log
+
+print everything fine?  install now? \(press enter\)
+read
+
+#no multiple jobs here - it breaks e.g. w/ curl
+print $make install
+print tail -F $version/make_install.log
+$make install > make_install.log 2>&1 && print all done || less make_install.log
+

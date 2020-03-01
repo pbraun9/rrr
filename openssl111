@@ -1,0 +1,11 @@
+url https://www.openssl.org/source/openssl-1.1.1d.tar.gz
+configure config
+#by default goes to /usr/local/ssl which is fine
+#--openssldir=/usr/local
+
+# https://www.openssl.org/source/
+# https://wiki.openssl.org/index.php/Compilation_and_Installation
+# https://www.howtoforge.com/tutorial/how-to-install-openssl-from-source-on-linux/
+# https://stackoverflow.com/questions/38985889/build-openvpn-with-specific-openssl-version
+# http://qaru.site/questions/2353404/build-openvpn-with-specific-openssl-version
+

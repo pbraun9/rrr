@@ -1,0 +1,9 @@
+url https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.9.1.tar.gz
+sig https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.9.1.tar.gz.asc
+args --enable-nc --disable-nls
+
+# https://github.com/libressl-portable/portable/blob/master/README.md
+# http://www.edwardhk.com/os/linux/libressl-setup/
+# https://obvi.us/crypto/libressl/
+# https://askubuntu.com/questions/708057/how-to-fix-undefined-reference-to-to-sslv3-client-method-during-curl-custom
+

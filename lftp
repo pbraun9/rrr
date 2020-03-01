@@ -1,0 +1,8 @@
+needs readline
+url http://lftp.yar.ru/ftp/lftp-4.8.4.tar.gz
+sig http://lftp.yar.ru/ftp/lftp-4.8.4.tar.gz.asc
+pub http://lav.yar.ru/lav@yars.free.net-gpg-public-key
+args --with-readline=/usr/local
+
+# https://lftp.yar.ru/get.html
+

@@ -1,0 +1,14 @@
+needs openssl
+#needs libpsl
+
+#url https://curl.haxx.se/download/curl-7.65.3.tar.gz
+#sig https://curl.haxx.se/download/curl-7.65.3.tar.gz.asc
+index https://curl.haxx.se/download/
+
+#keeping the netbsd default/system path for certs
+args --without-libpsl --with-ssl=/usr/local/ssl --with-ca-path=/etc/openssl/certs
+#--with-ca-bundle=/usr/local/ssl/certdata.txt
+
+# https://curl.haxx.se/download.html
+# https://curl.haxx.se/docs/install.html
+

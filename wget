@@ -1,0 +1,9 @@
+needs pkg-config openssl111
+#needs libpsl
+url https://ftp.gnu.org/gnu/wget/wget-latest.tar.gz
+sig https://ftp.gnu.org/gnu/wget/wget-latest.tar.gz.sig
+args --without-libpsl --with-ssl=openssl --with-openssl=auto --with-libssl-prefix=/usr/local/ssl
+#gmake
+
+# http://www.linuxfromscratch.org/blfs/view/svn/basicnet/wget.html
+

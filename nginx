@@ -1,0 +1,10 @@
+url https://nginx.org/download/nginx-1.17.4.tar.gz
+args --with-http_ssl_module --with-openssl=../openssl-1.1.1d
+#--with-mail_ssl_module
+#--with-http_v2_module
+#--with-http_geoip_module
+#--with-http_dav_module
+
+# https://nginx.org/en/download.html
+# https://nginx.org/en/docs/configure.html
+

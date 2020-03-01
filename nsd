@@ -1,0 +1,6 @@
+index https://www.nlnetlabs.nl/downloads/nsd/
+args --disable-dnstap --disable-systemd --with-ssl=/usr/local/ssl --with-chroot=/var/chroot/nsd --disable-ipv6 --enable-mmap --with-nsd_conf_file=/var/chroot/nsd/nsd.conf --enable-mmap
+
+#workaround for netbsd (before the fix)
+#export CPPFLAGS="-D_OPENBSD_SOURCE"
+

@@ -1,0 +1,7 @@
+url ftp://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz
+sig ftp://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz.sig
+#url ftp://ftp.cwru.edu/pub/bash/readline-8.0.tar.gz
+#sig ftp://ftp.cwru.edu/pub/bash/readline-8.0.tar.gz.sig
+
+# https://tiswww.case.edu/php/chet/readline/rltop.html
+

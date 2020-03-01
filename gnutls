@@ -1,0 +1,6 @@
+url https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.8.tar.xz
+sig https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.8.tar.xz.sig
+
+# https://www.gnutls.org/download.html
+# http://www.linuxfromscratch.org/blfs/view/svn/postlfs/gnutls.html
+
