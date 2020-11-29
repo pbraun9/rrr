@@ -1,8 +1,24 @@
-url https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.9.1.tar.gz
-sig https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.9.1.tar.gz.asc
-args --enable-nc --disable-nls
+#!/bin/ksh
+set -e
 
-# https://github.com/libressl-portable/portable/blob/master/README.md
+[[ ! -f libressl-3.3.0.tar.gz ]] && wget -c https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.3.0.tar.gz
+#sig https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.3.0.tar.gz.asc
+[[ ! -d libressl-3.3.0/ ]] && tar xzf libressl-3.3.0.tar.gz
+cd libressl-3.3.0/
+./configure --enable-nc --with-openssldir=/etc/ssl
+make clean >/dev/null && echo CLEAN
+make >/dev/null && echo BUILT || echo BUILD FAILED
+make install >/dev/null && echo INSTALLED || echo INSTALL FAILED
+cd ../
+
+#gone
+#--disable-nls
+
+# https://github.com/libressl-portable/portable/tags
+#./autogen.sh
+#
+# https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/
+#
 # http://www.edwardhk.com/os/linux/libressl-setup/
 # https://obvi.us/crypto/libressl/
 # https://askubuntu.com/questions/708057/how-to-fix-undefined-reference-to-to-sslv3-client-method-during-curl-custom
