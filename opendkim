@@ -1,3 +1,10 @@
+# wget https://ftp.sendmail.org/sendmail.8.16.1.tar.gz
+# tar xzf sendmail.8.16.1.tar.gz
+# cd sendmail.8.16.1/
+# ./Build
+
 url https://sourceforge.net/projects/opendkim/files/opendkim-2.10.3.tar.gz
-args --with-openssl=/usr/local --with-milter=~/rrr/sendmail-8.15.2 --disable-shared
+args --with-openssl=/usr/local --with-milter=/root/rrr/sendmail-8.16.1 --disable-shared
+#args --with-openssl=/usr/local --with-milter=/usr/lib64 --disable-shared
+
 
