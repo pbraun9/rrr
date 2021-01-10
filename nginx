@@ -1,9 +1,46 @@
-url https://nginx.org/download/nginx-1.17.4.tar.gz
-args --with-http_ssl_module --with-openssl=../openssl-1.1.1d
-#--with-mail_ssl_module
-#--with-http_v2_module
-#--with-http_geoip_module
-#--with-http_dav_module
+#!/bin/ksh
+set -e
+
+v=1.19.6
+ssl=../libressl-3.3.1
+
+[[ `uname` = Linux ]] && lock=/var/lock/nginx.lock
+[[ `uname` = NetBSD ]] && ( mkdir -p /var/db/nginx/ ; lock=/var/db/nginx/nginx.lock )
+[[ -z $lock ]] && need to defined lock file location && exit 1
+[[ ! -d $ssl ]] && need $ssl/ && exit 1
+
+#sometimes, freshly installed systems don't have it
+mkdir -p /usr/local/
+
+wget -c https://nginx.org/download/nginx-$v.tar.gz
+wget -c https://nginx.org/download/nginx-$v.tar.gz.asc
+gpg --recv-key A1C052F8
+gpg --verify nginx-$v.tar.gz.asc
+[[ ! -d nginx-$v/ ]] && tar xzf nginx-$v.tar.gz
+cd nginx-$v/
+./configure --prefix=/usr/local \
+        --modules-path=/etc/nginx/modules \
+        --conf-path=/etc/nginx/nginx.conf \
+        --pid-path=/var/run/nginx.pid --lock-path=$lock \
+        --user=www --group=www \
+        --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log \
+        --with-http_ssl_module --with-http_v2_module \
+        --with-http_addition_module --with-http_sub_module \
+        --with-http_stub_status_module --with-http_gzip_static_module \
+	--with-openssl=$ssl
+make && echo BUILT
+make install && echo INSTALLED
+cd ../
+
+ls -ldhF /etc/nginx/
+ls -alhF /etc/nginx/
+
+ls -ldhF /var/log/nginx/
+ls -alhF /var/log/nginx/
+
+# --with-mail_ssl_module
+# --with-http_geoip_module
+# --with-http_dav_module
 
 # https://nginx.org/en/download.html
 # https://nginx.org/en/docs/configure.html

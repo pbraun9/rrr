@@ -1,15 +1,27 @@
 #!/bin/ksh
 set -e
 
-[[ ! -f libressl-3.3.0.tar.gz ]] && wget -c https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.3.0.tar.gz
-#sig https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.3.0.tar.gz.asc
-[[ ! -d libressl-3.3.0/ ]] && tar xzf libressl-3.3.0.tar.gz
-cd libressl-3.3.0/
-./configure --enable-nc --with-openssldir=/etc/ssl
-make clean >/dev/null && echo CLEAN
-make >/dev/null && echo BUILT || echo BUILD FAILED
-make install >/dev/null && echo INSTALLED || echo INSTALL FAILED
+v=3.3.1
+
+# /etc/libre/ to avoid conflict with distro's openssl
+
+wget -c https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$v.tar.gz
+wget -c https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$v.tar.gz.asc
+gpg --recv-key 4B708F96
+gpg --verify libressl-$v.tar.gz.asc
+[[ ! -d libressl-$v/ ]] && tar xzf libressl-$v.tar.gz
+cd libressl-$v/
+./configure --enable-nc --with-openssldir=/etc/libre && echo CONFIGURED
+#make clean >/dev/null && echo CLEAN
+make && echo BUILT
+make install && echo INSTALLED
+#openssl: error while loading shared libraries: libssl.so.48: cannot open shared object file: No such file or directory
+grep /usr/local/lib /etc/ld.so.conf
+ldconfig
 cd ../
+
+ls -ldhF /etc/libre/
+ls -alhF /etc/libre/
 
 #gone
 #--disable-nls
