@@ -1,0 +1,34 @@
+--- apps/openssl/s_client.c.orig	2021-01-24 21:16:23.851869637 +0300
++++ apps/openssl/s_client.c	2021-01-24 21:15:52.029867723 +0300
+@@ -1197,10 +1197,12 @@
+ 		(void) BIO_flush(fbio);
+ 		BIO_pop(fbio);
+ 		BIO_free(fbio);
+-		if (!foundit)
++		if (!foundit) {
+ 			BIO_printf(bio_err,
+-			    "didn't find starttls in server response,"
+-			    " try anyway...\n");
++			    "didn't find STARTTLS in SMTP/LMTP session,"
++			    " exiting\n");
++			goto shut;
++		}
+ 		BIO_printf(sbio, "STARTTLS\r\n");
+ 		BIO_read(sbio, sbuf, BUFSIZZ);
+ 	} else if (s_client_config.starttls_proto == PROTO_POP3) {
+@@ -1229,10 +1231,12 @@
+ 		(void) BIO_flush(fbio);
+ 		BIO_pop(fbio);
+ 		BIO_free(fbio);
+-		if (!foundit)
++		if (!foundit) {
+ 			BIO_printf(bio_err,
+-			    "didn't find STARTTLS in server response,"
+-			    " try anyway...\n");
++			    "didn't find STARTTLS in IMAP session,"
++			    " exiting\n");
++			goto shut;
++		}
+ 		BIO_printf(sbio, ". STARTTLS\r\n");
+ 		BIO_read(sbio, sbuf, BUFSIZZ);
+ 	} else if (s_client_config.starttls_proto == PROTO_FTP) {

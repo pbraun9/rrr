@@ -11,6 +11,7 @@ gpg --recv-key 4B708F96
 gpg --verify libressl-$v.tar.gz.asc
 [[ ! -d libressl-$v/ ]] && tar xzf libressl-$v.tar.gz
 cd libressl-$v/
+patch -p0 < ../libressl-3.3.1.patch
 ./configure --enable-nc --with-openssldir=/etc/libre && echo CONFIGURED
 #make clean >/dev/null && echo CLEAN
 make && echo BUILT

@@ -1,0 +1,25 @@
+#!/bin/ksh
+set -e
+
+# that's not the one you find on BSDs but it's pretty nice anyhow
+
+wget -c http://archives.eyrie.org/software/system/newsyslog-1.9.tar.gz
+wget -c http://archives.eyrie.org/software/system/newsyslog-1.9.tar.gz.asc
+gpg --recv-key 5736DE75
+gpg --verify newsyslog-1.9.tar.gz.asc
+
+#Primary key fingerprint: E784 364E 8DDE 7BB3 70FB  D9EA D15D 3138 8200 4173
+#     Subkey fingerprint: D739 34B4 9674 CF5C CD9A  C278 7D80 315C 5736 DE75
+
+[[ ! -d newsyslog-1.9/ ]] && tar xzf newsyslog-1.9.tar.gz
+cd newsyslog-1.9/
+./configure --sysconfdir=/etc && echo CONFIGURED
+make && echo BUILT
+make install && echo INSTALLED
+cd ../
+
+[[ ! -f /etc/newsyslog.conf ]] && echo -e \\nyou need to configure /etc/newsyslog.conf\\n
+
+# https://www.eyrie.org/~eagle/software/newsyslog/
+# https://pub.nethence.com/system/newsyslog
+
